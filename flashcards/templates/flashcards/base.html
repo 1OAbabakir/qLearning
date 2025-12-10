@@ -1,0 +1,24 @@
+{% load static %}
+
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+  <link rel="icon" type="image/x-icon" href="{% static 'favicon.ico' %}">
+  <title>Spanish Trainer</title>
+</head>
+<body>
+  <nav>
+    <a href="/">Dashboard</a>
+    
+    <a href="/add/">Karte hinzufügen</a>
+    <a href="/logout/">Logout</a>
+  </nav>
+  {% for m in messages %}
+    <div class="msg {% if m.tags %}{{ m.tags }}{% endif %}">{{ m }}</div>
+  {% endfor %}
+  {% block content %}{% endblock %}
+</body>
+</html>

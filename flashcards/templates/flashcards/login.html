@@ -1,0 +1,22 @@
+{% extends "flashcards/base.html" %}
+{% block content %}
+<div class="card">
+  <h2>Login</h2>
+
+  <form method="post">{% csrf_token %}
+    {{ form.as_p }}
+
+    <div class="login-buttons">
+      <button type="submit">Einloggen</button>
+
+      <a href="/register/" class="btn-secondary">
+        Registrieren
+      </a>
+    </div>
+
+  </form>
+
+</div>
+
+
+{% endblock %}

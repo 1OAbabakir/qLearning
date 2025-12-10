@@ -1,0 +1,49 @@
+{% extends "flashcards/base.html" %}
+{% load static %}
+{% block content %}
+<div class="card">
+  <h2>Lernen {{ direction }}{% if category %} · Kategorie: {{ category }}{% endif %}</h2>
+  {% if not card %}
+    <p>Keine fälligen Karten.</p>
+  {% else %}
+    <p><b>Prompt:</b> {{ prompt }}</p>
+    {#  #}
+
+    <div class="row">
+      <form method="GET" style="display:inline-block">
+        <input type="hidden" name="dir" value="{{ direction }}" />
+        <input type="hidden" name="cat" value="{{ category }}" />
+        <button>Nächste Karte</button>
+      </form>
+
+    {# answer would not show the same questions #}
+    
+      <form method="post" style="display:inline-block">{% csrf_token %}
+        <input type="hidden" name="card_id" value="{{ card.id }}" />
+        <button name="action" value="show_answer">Antwort anzeigen</button>
+      </form>
+    </div>
+    <!-- Notizfeld (wird nur lokal im Browser gespeichert, nicht in der DB) -->
+    <label for="study-note" class="note-label"></label>
+    <textarea id="study-note" rows="4" placeholder="Deine Notiz zur Karte..." class="note-area"></textarea>
+      
+  {% endif %}
+</div>
+
+<div class="card">
+  <h3>Nach Kategorie lernen</h3>
+  <ul>
+    {% for c in categories %}
+      <li>
+        <a href="/study/{{ c.category }}/?dir={{ direction }}">{{ c.category }}</a> ({{ c.cnt }})
+        {% if category == c.category %} ← aktuell{% endif %}
+      </li>
+    {% empty %}
+      <li>Keine Kategorien vorhanden.</li>
+    {% endfor %}
+  </ul>
+  <script src="{% static 'js/save_note.js' %}"></script>
+</div>
+
+{% endblock %}
+

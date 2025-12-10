@@ -1,0 +1,22 @@
+{% extends "flashcards/base.html" %}
+{% block content %}
+<div class="card">
+  <h2>Übersicht</h2>
+  <p>Fällige Karten heute: <b>{{ due }}</b></p>
+  <p>Gesamt: <b>{{ total }}</b></p>
+</div>
+
+<div class="card">
+  <h3>Kategorien</h3>
+  <ul>
+    {% for c in categories %}
+      <li>{{ c.category }} ({{ c.cnt }}) —
+        <a href="/study/{{ c.category }}">Lernen</a>
+      </li>
+    {% empty %}
+      <li>Keine Karten vorhanden.</li>
+    {% endfor %}
+  </ul>
+  <p><a href="/add/">Karte hinzufügen</a></p>
+</div>
+{% endblock %}

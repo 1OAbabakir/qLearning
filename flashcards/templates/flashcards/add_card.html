@@ -1,0 +1,24 @@
+{% extends "flashcards/base.html" %}
+{% block content %}
+
+<div class="card">
+  <h2>Karte hinzufügen (einzeln)</h2>
+  <form method="post">{% csrf_token %}
+    {{ form.as_p }}
+    <button>Speichern</button>
+  </form>
+</div>
+
+<div class="card">
+    <h2>CSV importieren</h2>
+    <p>Erwarte CSV ohne Überschrift, Schema: <code>front,back[,category]</code><br>
+      Beispiele:<br>
+      <code>hola,hallo,spanisch</code> oder <code>Was ist Django?,Ein Webframework,informatic</code></p>
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ csv_form.as_p }}
+    <button>Import starten</button>
+  </form>
+</div>
+
+{% endblock %}
