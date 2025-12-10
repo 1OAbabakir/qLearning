@@ -1,8 +1,6 @@
 from django.db import models # pyright: ignore[reportMissingModuleSource]
 from django.contrib.auth.models import User
-from datetime import date, timedelta
-
-INTERVALS = {1:1, 2:2, 3:4, 4:7, 5:16}
+from datetime import date
 
 class Card(models.Model):
     # Generic front/back so it works for vocab or Q&A
@@ -13,17 +11,11 @@ class Card(models.Model):
     next_due = models.DateField(default=date.today)
     owner = models.ForeignKey(User, null=True, blank=True, on_delete=models.SET_NULL)
     created = models.DateTimeField(auto_now_add=True)
+    image = models.ImageField(upload_to='cards_images/', null=True, blank=True)
 
     # next thing should be image support 
     # and scheduling algorithm (Leitner system)
     
-
-    def schedule(self, correct: bool):
-        if correct:
-            self.box = min(5, self.box + 1)
-        else:
-            self.box = 1
-        self.next_due = date.today() + timedelta(days=INTERVALS[self.box])
 
     def save(self, *args, **kwargs):
         if not self.id: # pyright: ignore[reportAttributeAccessIssue]

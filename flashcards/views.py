@@ -3,11 +3,11 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.db.models import Count
-from django.contrib.auth.forms import UserCreationForm
 from io import TextIOWrapper
 import csv
 from datetime import date
-from .forms import LoginForm, CardForm, CsvUploadForm, _normalize, RegisterForm
+
+from .forms import LoginForm, CardForm, CsvUploadForm, RegisterForm
 from .models import Card
 
 def login_view(request):
@@ -22,10 +22,6 @@ def login_view(request):
     else:
         form = LoginForm()
     return render(request, "flashcards/login.html", {"form": form})
-
-from django.contrib.auth import login
-from django.contrib import messages
-from django.shortcuts import render, redirect
 
 def register_view(request):
     # Wenn der User schon eingeloggt ist, nicht noch mal registrieren
