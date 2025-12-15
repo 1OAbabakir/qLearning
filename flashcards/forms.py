@@ -46,8 +46,8 @@ class CardForm(forms.ModelForm):
         model = Card
         fields = ("question","answer","category","image")
         labels = {
-            "question": "Frage/Front (z.B. Spanisch oder Frage)",
-            "answer": "Antwort/Back (z.B. Deutsch oder Lösung)",
+            "question": "Frage/Front",
+            "answer": "Antwort/Back",
             "category": "Kategorie/Thema",
             "image": "Bild (optional)"
         }

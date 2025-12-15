@@ -14,7 +14,7 @@
     <h2>CSV importieren</h2>
     <p>Erwarte CSV ohne Überschrift, Schema: <code>front,back[,category]</code><br>
       Beispiele:<br>
-      <code>hola,hallo,spanisch</code> oder <code>Was ist Django?,Ein Webframework,informatic</code></p>
+      <code>frage,antwort,[.Kategorie]</code></p>
   <form method="post" enctype="multipart/form-data">
     {% csrf_token %}
     {{ csv_form.as_p }}
