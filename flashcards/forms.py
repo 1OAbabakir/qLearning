@@ -1,5 +1,6 @@
 from django import forms
 from django.utils.safestring import mark_safe
+from django.contrib.auth.models import User
 import unicodedata
 from .models import Card
 
@@ -31,7 +32,6 @@ class RegisterForm(forms.Form):
         return cleaned_data
 
     def save(self, commit=True):
-        from django.contrib.auth.models import User
         user = User(
             username=self.cleaned_data["username"],
             email=self.cleaned_data["email"]
@@ -44,7 +44,7 @@ class RegisterForm(forms.Form):
 class CardForm(forms.ModelForm):
     class Meta:
         model = Card
-        fields = ("question","answer","category")
+        fields = ("question","answer","category","image")
         labels = {
             "question": "Frage/Front (z.B. Spanisch oder Frage)",
             "answer": "Antwort/Back (z.B. Deutsch oder Lösung)",

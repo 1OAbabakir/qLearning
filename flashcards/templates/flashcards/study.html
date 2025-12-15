@@ -15,7 +15,21 @@
         <input type="hidden" name="cat" value="{{ category }}" />
         <button>Nächste Karte</button>
       </form>
-
+      
+      {% if card.image %}
+      <div style="display:inline-block; margin-left:20px; vertical-align:top">
+        <div>
+          <img id="card-image" data-card-id="{{ card.id }}" src="/card/{{ card.id }}/image/?w=600" alt="card image" style="max-width:400px; max-height:300px; display:block;" />
+        </div>
+        <div style="margin-top:8px">
+          <button id="rotate-left">⟲</button>
+          <button id="rotate-right">⟳</button>
+          <button id="zoom-in">＋</button>
+          <button id="zoom-out">－</button>
+          <button id="thumb">Thumbnail</button>
+        </div>
+      </div>
+      {% endif %}
     {# answer would not show the same questions #}
     
       <form method="post" style="display:inline-block">{% csrf_token %}
@@ -43,6 +57,7 @@
     {% endfor %}
   </ul>
   <script src="{% static 'js/save_note.js' %}"></script>
+  <script src="{% static 'js/image_controls.js' %}"></script>
 </div>
 
 {% endblock %}

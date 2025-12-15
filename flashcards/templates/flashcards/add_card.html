@@ -3,8 +3,9 @@
 
 <div class="card">
   <h2>Karte hinzufügen (einzeln)</h2>
-  <form method="post">{% csrf_token %}
+  <form method="post" enctype="multipart/form-data">{% csrf_token %}
     {{ form.as_p }}
+    <p>Akzeptiert: JPG/PNG. Optionales Bild zur Karte hinzufügen.</p>
     <button>Speichern</button>
   </form>
 </div>

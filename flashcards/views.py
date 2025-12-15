@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
@@ -6,6 +6,8 @@ from django.db.models import Count
 from io import TextIOWrapper
 import csv
 from datetime import date
+from django.http import HttpResponse
+from .utils.image_utils import process_image_from_path
 
 from .forms import LoginForm, CardForm, CsvUploadForm, RegisterForm
 from .models import Card
@@ -112,7 +114,7 @@ def add_card(request):
                 messages.error(request, "CSV-Upload fehlgeschlagen. Bitte Datei prüfen.")
         else:
             # Einzel-Eingabe
-            single_form = CardForm(request.POST)
+            single_form = CardForm(request.POST, request.FILES)
             if single_form.is_valid():
                 card = single_form.save(commit=False)
                 card.owner = request.user
@@ -163,3 +165,33 @@ def study(request, category):
         "prompt": prompt,
         "direction": direction,
     })
+
+
+@login_required
+def card_image(request, card_id):
+    """Return a processed image for a card. Query params: rotate, w, h, thumb (1)
+
+    Example: /card/5/image/?w=600&rotate=90
+    """
+    card = get_object_or_404(Card, id=card_id, owner=request.user)
+    if not card.image:
+        return HttpResponse(status=404)
+
+    try:
+        rotate = int(request.GET.get('rotate', 0))
+    except ValueError:
+        rotate = 0
+    try:
+        w = int(request.GET.get('w')) if request.GET.get('w') else None
+    except ValueError:
+        w = None
+    try:
+        h = int(request.GET.get('h')) if request.GET.get('h') else None
+    except ValueError:
+        h = None
+
+    thumb = request.GET.get('thumb') == '1'
+    fmt = request.GET.get('fmt', 'JPEG')
+
+    data, mime = process_image_from_path(card.image.path, rotate=rotate, width=w, height=h, thumb=thumb, fmt=fmt)
+    return HttpResponse(data, content_type=mime)
